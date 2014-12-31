@@ -1,0 +1,27 @@
+{
+  "name": "clusterDistribution",
+  "version": "1.0.0",
+  "description": "Distribute work to clusters in Nodejs",
+  "main": "index.js",
+  "dependencies": {
+    "processCallback.js": "git://github.com/hirokiosame/processCallback.js.git"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/hirokiosame/clusterDistribution.git"
+  },
+  "keywords": [
+    "cluster",
+    "distribution"
+  ],
+  "author": "Hiroki Osame",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/hirokiosame/clusterDistribution/issues"
+  },
+  "homepage": "https://github.com/hirokiosame/clusterDistribution"
+}
