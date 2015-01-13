@@ -18,9 +18,13 @@ clusterDistribution(
 			});
 		})(worker); }
 	},
-	function worker(msg, toMaster){
+	function worker(listen){
 
-		// Process work and send back
-		toMaster(msg + " World");
+		// Wait for master
+		listen.recv(function(msg, toMaster){
+
+			// Process work and send back
+			toMaster(msg + " Master");
+		});
 	}
 );

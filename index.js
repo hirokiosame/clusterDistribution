@@ -64,7 +64,7 @@ module.exports = (function(){
 
 		// Load worker
 		else {
-			listen(process, worker);
+			worker(listen(process));
 		}
 	};
 })();
