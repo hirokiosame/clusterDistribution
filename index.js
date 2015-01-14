@@ -23,7 +23,7 @@ module.exports = (function(){
 		// Code
 		else{
 			var args = Array.prototype.slice.apply(arguments);
-			args[0] = "./spawn.js";
+			args[0] = __dirname + "/spawn.js";
 			args[2].env.code = modulePath;
 
 			return fork.apply(child_process, args);
