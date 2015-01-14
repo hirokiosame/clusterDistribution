@@ -8,13 +8,46 @@ module.exports = (function(){
 		};
 	}
 
+
+	var path = require("path"),
+		child_process = require('child_process'),
+		fork = child_process.fork;
+
+	child_process.fork = function(modulePath){
+
+		// Legitimate path
+		if(path.dirname(modulePath)+"/"+path.basename(modulePath) === modulePath ){
+			return fork.apply(child_process, Array.prototype.slice.apply(arguments));
+		}
+
+		// Code
+		else{
+			var args = Array.prototype.slice.apply(arguments);
+			args[0] = "./spawn.js";
+			args[2].env.code = modulePath;
+
+			return fork.apply(child_process, args);
+		}
+	};
+
+	var cluster = require('cluster');
+
 	return function(options, master, worker){
 
-		var cluster = require('cluster'),
-			listen = require('processCallback.js');
+		if( typeof master !== "function" ){ throw new Error("Master must be a function"); }
+
+		if( typeof worker !== "function" ){ throw new Error("Worker must be a function"); }
+
+
+		var listen = require('processCallback.js');
 
 		// Master
 		if( cluster.isMaster ){
+
+			// Prepare Worker
+			cluster.setupMaster({
+				exec : worker
+			});
 
 			// Number of workers
 			var numWorkers = options,
@@ -46,7 +79,7 @@ module.exports = (function(){
 
 				// Delete worker
 				for( var i = 0; i<workers.length; i++ ){
-					if( workers[i].listeningTo === worker.process.pid ){
+					if( workers[i].listeningTo === worker ){
 						delete workers[i];
 						break;
 					}
@@ -63,8 +96,8 @@ module.exports = (function(){
 		}
 
 		// Load worker
-		else {
-			worker(listen(process));
-		}
+		// else {
+		// 	worker(listen(process));
+		// }
 	};
 })();
